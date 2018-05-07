@@ -1,6 +1,8 @@
 
 # scrapy框架爬取CSDN文章数据
 
+> 为了采集数据方便$storm$处理
+
 ## 环境
 |||
 |-|-|
@@ -37,7 +39,7 @@
 │  scrapy.cfg
 │  项目结构.png          # 图片,更清晰一点
 │
-├─studyscrapy
+├─studyscrapy           # 在此目录下运行main.py 启动爬虫
 |   ├─spiders
 │   │  │  studyscrapy.py # 爬虫文件
 │   │  │  __init__.py
@@ -126,14 +128,21 @@ SPIDER_MODULES = ['studyscrapy.spiders']
 NEWSPIDER_MODULE = 'studyscrapy.spiders'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36'
 ROBOTSTXT_OBEY = True
-DOWNLOAD_DELAY = 0.05
+
 ITEM_PIPELINES = {
    'studyscrapy.pipelines.StudyscrapyPipeline': 300,
 }
+
+DOWNLOAD_DELAY = 0.05  # 延迟 越小越快也越容易被限制IP
+
+------------------------分割线下的默认settings文件中没有需手动添加------------------------
+
+
 # LOG_FILE = "CSDNspider.log"            # log信息输出到log.txt文件中
 LOG_LEVEL = "INFO"
 LOG_ENABLED = True              # 启用logging
 LOG_STDOUT = True               # 所有标准输出被重定向到log中
+
 ```
 **pipelines.py**
 ```python
@@ -169,3 +178,14 @@ from scrapy import cmdline
 cmdline.execute('scrapy crawl studyscrapy'.split())
 ```
 
+## 运行
+
+在命令行下 调成到`studyscrapy`目录下
+
+有两种方式启动    
+1. 输入`python main.py`
+2. 输入`scrapy crawl studyscrapy`
+
+## storm
+
+storm可以同样使用`RedisQueue.py`来获取队列中的数据,只要保证和爬虫的`redis_url`一致即可
