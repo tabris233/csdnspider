@@ -1,12 +1,13 @@
 # *-* coding:utf-8 *-*
+
+import json
+import random
+import time
+from multiprocessing import Process, Queue
+
+import lxml
 import requests
 from bs4 import BeautifulSoup
-import lxml
-from multiprocessing import Process, Queue
-import random
-import json
-import time
-import requests
 
 
 class Proxies(object):
@@ -61,6 +62,7 @@ class Proxies(object):
         works = []
         for _ in range(15):
             works.append(Process(target=self.verify_one_proxy,args=(old_queue, new_queue)))
+
         for work in works:
             work.start()
         for proxy in self.proxies:
@@ -69,6 +71,7 @@ class Proxies(object):
             old_queue.put(0)
         for work in works:
             work.join()
+            
         self.proxies = []
         while True:
             try:
@@ -95,7 +98,7 @@ class Proxies(object):
 if __name__ == '__main__':
     a = Proxies()
     a.verify_proxies()
-    # print(a.proxies)
+    # (a.proxies)
     proxie = a.proxies
     with open('proxies.txt', 'a') as f:
        for proxy in proxie:
