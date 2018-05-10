@@ -34,10 +34,17 @@
     - 文章标题
     - 发表时间
         > 由于[https://blog.csdn.net/nav/cloud](https://blog.csdn.net/nav/cloud)下没有文章的时间(response下也没有),只有标题,所以访问提取出的url,然后获取时间
-5. 使用scarpy爬取,并加入redis队列
-    - 采用redis HASH进行数据去重
-    - ~~布隆过滤器~~
-
+5. 使用scrapy爬取
+    - 加入redis队列
+        - 采用redis HASH进行数据去重
+        - ~~布隆过滤器~~
+    - 多线程/进程
+        - scrapy自带
+    - 内存池
+        - 手写一个爬取xici网的高匿IP的爬虫+Download中间件进行使用
+        - 调用API
+        - ~~使用收费代理~~
+        
 ## 项目结构
 
 ![项目结构截图](./项目结构.png)
